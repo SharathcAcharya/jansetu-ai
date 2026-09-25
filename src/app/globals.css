@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary-navy: #0f2b48;
+  --primary-blue: #1e3a8a;
+  --accent-saffron: #ea580c;
+  --accent-saffron-light: #f97316;
+  --civic-green: #047857;
+  --civic-green-light: #10b981;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Civic Grid Pattern */
+.bg-civic-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 43, 72, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 43, 72, 0.04) 1px, transparent 1px);
+}
+
+/* Subtle Civic Tricolor Stripe */
+.civic-tricolor-bar {
+  background: linear-gradient(
+    90deg,
+    #ea580c 0%,
+    #ea580c 33.3%,
+    #ffffff 33.3%,
+    #ffffff 66.6%,
+    #047857 66.6%,
+    #047857 100%
+  );
+  height: 3px;
+}
+
+/* Glassmorphic Cards */
+.gov-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.gov-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+}
+
+/* Audio Waveform Animation */
+@keyframes soundwave {
+  0%, 100% { height: 6px; }
+  50% { height: 28px; }
+}
+
+.animate-soundwave-1 {
+  animation: soundwave 1.1s ease-in-out infinite;
+}
+.animate-soundwave-2 {
+  animation: soundwave 0.8s ease-in-out infinite 0.2s;
+}
+.animate-soundwave-3 {
+  animation: soundwave 1.3s ease-in-out infinite 0.4s;
+}
+.animate-soundwave-4 {
+  animation: soundwave 0.9s ease-in-out infinite 0.1s;
+}
+.animate-soundwave-5 {
+  animation: soundwave 1.2s ease-in-out infinite 0.3s;
 }

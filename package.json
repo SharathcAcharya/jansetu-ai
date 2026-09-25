@@ -6,12 +6,31 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:demo": "node scripts/seedDemoData.mjs --confirm-seed",
+    "seed:evidence": "node scripts/seedEvidenceDemo.mjs --confirm-seed",
+    "test:priority": "npx tsx scripts/testPriorityScoring.mjs",
+    "test:recommendation": "node scripts/testRecommendationEngine.mjs",
+    "test:voice": "node scripts/testVoiceAndDataSources.mjs",
+    "test:geography": "npx tsx scripts/testGeographyNormalizer.mjs",
+    "test:evidence": "npx tsx scripts/testEvidenceProviders.mjs",
+    "test:bundle": "npx tsx scripts/testEvidenceBundle.mjs",
+    "test:census": "npx tsx scripts/testCensusIntegration.mjs",
+    "test:mangalore": "npx tsx scripts/testMangaloreCensusIntegration.mjs",
+    "test:dashboard": "npx tsx scripts/testEvidenceDashboard.mjs",
+    "test:hotspot-details": "npx tsx scripts/testHotspotDetails.mjs",
+    "test:map-sync": "npx tsx scripts/testMapEvidenceSync.mjs",
+    "test:e2e-demo": "npx tsx scripts/testEndToEndDemo.mjs"
   },
   "dependencies": {
+    "@google/genai": "^2.23.0",
+    "@google/generative-ai": "^0.24.1",
+    "firebase-admin": "^14.4.0",
+    "lucide-react": "^1.47.0",
     "next": "16.3.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
