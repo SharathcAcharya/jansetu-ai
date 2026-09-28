@@ -234,7 +234,9 @@ export const EvidenceBehindDemand: React.FC<EvidenceBehindDemandProps> = ({
             {/* Completeness Badge */}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs">
               <span className="text-slate-400 font-medium">Evidence Completeness:</span>
-              <span className="font-bold text-white font-mono">{completeness.score}%</span>
+              <span className="font-bold text-white font-mono">
+                {completeness.score <= 1 && completeness.score > 0 ? Math.round(completeness.score * 100) : Math.round(completeness.score)}%
+              </span>
               <span className={`px-2 py-0.2 rounded text-[10px] font-extrabold border ${getCompletenessBadge()}`}>
                 {completeness.level}
               </span>

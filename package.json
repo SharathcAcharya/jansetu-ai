@@ -21,7 +21,8 @@
     "test:hotspot-details": "npx tsx scripts/testHotspotDetails.mjs",
     "test:map-sync": "npx tsx scripts/testMapEvidenceSync.mjs",
     "test:e2e-demo": "npx tsx scripts/testEndToEndDemo.mjs",
-    "test:mangalore-select": "npx tsx scripts/testMangaloreSelectionRegression.mjs"
+    "test:mangalore-select": "npx tsx scripts/testMangaloreSelectionRegression.mjs",
+    "test:completeness": "npx tsx scripts/testCompletenessFormatting.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.23.0",

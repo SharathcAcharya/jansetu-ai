@@ -860,7 +860,9 @@ export const HotspotsSection: React.FC<HotspotsSectionProps> = ({
                     </span>
                   </div>
                   <div className="text-base font-extrabold text-emerald-700">
-                    {currentBundle ? `${Math.round(currentBundle.completeness.score * 100)}%` : '100%'}
+                    {currentBundle
+                      ? `${Math.round(currentBundle.completeness.score <= 1 && currentBundle.completeness.score > 0 ? currentBundle.completeness.score * 100 : currentBundle.completeness.score)}%`
+                      : '100%'}
                   </div>
                   <div className="text-[11px] font-semibold text-slate-700 mt-0.5">
                     {currentBundle ? currentBundle.completeness.level : 'HIGH'}
