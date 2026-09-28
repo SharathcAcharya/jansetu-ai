@@ -140,9 +140,10 @@ export const IndiaMapPlaceholder: React.FC<IndiaMapProps> = ({
   ) || null;
 
   const scrollToHotspotDetails = () => {
+    if (typeof window === 'undefined') return;
     const el = document.getElementById('hotspot-details') || document.getElementById('evidence-behind-demand');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 

@@ -67,10 +67,23 @@ export const HotspotsSection: React.FC<HotspotsSectionProps> = ({
     setRecError(null);
   }, [activeHotspot?.locationKey]);
 
-  const handleSelect = (key: string) => {
+  const scrollToHotspotDetails = () => {
+    if (typeof window === 'undefined') return;
+    const el = document.getElementById('hotspot-details') || document.getElementById('evidence-behind-demand');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleSelect = (key: string, shouldScroll = true) => {
     setInternalSelectedKey(key);
     if (onSelectHotspot) {
       onSelectHotspot(key);
+    }
+    if (shouldScroll) {
+      setTimeout(() => {
+        scrollToHotspotDetails();
+      }, 50);
     }
   };
 
@@ -226,7 +239,7 @@ export const HotspotsSection: React.FC<HotspotsSectionProps> = ({
                   return (
                     <tr 
                       key={hs.locationKey || idx}
-                      onClick={() => handleSelect(hs.locationKey)}
+                      onClick={() => handleSelect(hs.locationKey, true)}
                       className={`cursor-pointer transition-colors ${
                         isSelected 
                           ? 'bg-blue-50/60 font-medium' 
@@ -321,15 +334,18 @@ export const HotspotsSection: React.FC<HotspotsSectionProps> = ({
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleSelect(hs.locationKey);
+                            handleSelect(hs.locationKey, true);
                           }}
-                          className={`px-2 py-1 rounded text-[11px] font-semibold transition-colors ${
+                          aria-controls="hotspot-details"
+                          title={`View details for ${displayName}`}
+                          className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors flex items-center justify-center gap-1 mx-auto ${
                             isSelected 
                               ? 'bg-blue-600 text-white' 
                               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                           }`}
                         >
-                          Details
+                          <span>Details</span>
+                          <ChevronRight className={`w-3 h-3 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
                         </button>
                       </td>
                     </tr>
@@ -375,7 +391,7 @@ export const HotspotsSection: React.FC<HotspotsSectionProps> = ({
         const demoFallbackLevel = currentBundle?.fallbackMetadata?.demographicsMatchedLevel ?? 'district';
 
         return (
-          <div id="hotspot-details" className="gov-card p-6 bg-white border border-slate-200 space-y-6">
+          <div id="hotspot-details" className="gov-card p-6 bg-white border border-slate-200 space-y-6 scroll-mt-24">
             {/* ---------------------------------------------------- */}
             {/* 1. HOTSPOT HEADER                                   */}
             {/* ---------------------------------------------------- */}
@@ -1133,7 +1149,7 @@ export const HotspotsSection: React.FC<HotspotsSectionProps> = ({
             {/* ---------------------------------------------------- */}
             {/* 6. EVIDENCE BEHIND DEMAND (Phase 6E-1 Component)     */}
             {/* ---------------------------------------------------- */}
-            <div id="evidence-behind-demand" className="pt-6 border-t border-slate-200">
+            <div id="evidence-behind-demand" className="pt-6 border-t border-slate-200 scroll-mt-24">
               <EvidenceBehindDemand 
                 hotspot={activeHotspot} 
                 onBundleLoaded={setCurrentBundle} 
