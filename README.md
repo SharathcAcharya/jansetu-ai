@@ -19,7 +19,7 @@ JanSetu AI is a multilingual civic intelligence platform that transforms citizen
 
 1. **Linguistic & Accessibility Barriers**: Millions of citizens speak regional vernaculars and dialects, making text-heavy official portals inaccessible. Critical civic grievances often remain unvoiced.
 2. **Fragmented, Isolated Grievances**: Traditional grievance systems treat complaints as isolated, disconnected tickets rather than aggregated indicators of systemic infrastructure failure.
-3. **Subjective Resource Allocation**: Capital works and infrastructure budgets are frequently allocated without empirical, ground-up demand density and demographic context.
+3. **Limited Demand Aggregation**: Individual grievances are often difficult to aggregate into geographic patterns that reveal recurring development needs.
 4. **Lack of Verifiable Ground Truth**: Grievance portals rarely corroborate citizen claims with demographic baselines or operational infrastructure records, leading to skepticism or misallocation.
 
 ---
@@ -31,7 +31,7 @@ JanSetu AI bridges the civic-administrative divide by pairing **multimodal verna
 - **Google Gemini** parses vernacular audio and text into standardized civic records without hallucinating missing geography.
 - Grievances are clustered into geographic demand hotspots.
 - Application logic calculates a **transparent, deterministic priority score** (Gemini does not decide the score).
-- An **Evidence Bundle** synthesizes citizen demands with official 2011 Census demographics and transparent infrastructure records.
+- An **Evidence Bundle** combines citizen demand with Census 2011 demographic evidence and explicitly labelled infrastructure and investment evidence.
 - **Google Gemini** drafts an advisory development recommendation, providing engineers with an immediate starting brief.
 
 ---
@@ -53,7 +53,7 @@ Deterministic Explainable Priority Score (30% Demand + 25% Pop + 25% Urgency + 2
         ↓
 Evidence Bundle (Citizen + Census 2011 Demographic + Infrastructure + Investment)
         ↓
-Gemini Evidence-Aware Recommendation (Project Scope, Budget Estimates, Timeline)
+Gemini Evidence-Aware Recommendation (Project Scope, Suggested Intervention, Implementation Considerations, Timeline & Administrative Next Steps)
         ↓
 Policymaker Dashboard (Interactive India Map, Hotspot Details, Evidence Inspection)
 ```
@@ -66,7 +66,7 @@ Policymaker Dashboard (Interactive India Map, Hotspot Details, Evidence Inspecti
 
 > **Crucial Architectural Boundary:**  
 > **Google Gemini DOES NOT calculate the priority score.**  
-> The priority score is computed 100% deterministically by mathematical application logic to ensure complete auditability, fairness, and zero stochastic drift.
+> The priority score is computed deterministically by mathematical application logic, making the calculation reproducible and auditable.
 
 ---
 
@@ -86,7 +86,7 @@ Policymaker Dashboard (Interactive India Map, Hotspot Details, Evidence Inspecti
 12. **Public Investment Evidence Layer**: Prior fiscal allocations, approved works, and expenditure records relevant to the problem area.
 13. **Evidence Provenance & Freshness Tracking**: Granular tracking of source provenance, retrieval timestamps, collection years, and synthetic flags.
 14. **Conflict Transparency**: Neutral side-by-side surfacing of discrepancies between citizen reports and administrative data without suppression.
-15. **AI Development Recommendations**: Gemini-generated project briefs detailing intervention scopes, estimated costs, and completion timelines.
+15. **AI Development Recommendations**: Gemini-generated project briefs detailing intervention scopes, implementation considerations, and completion timelines.
 16. **Policymaker Dashboard**: Comprehensive command center with KPI metrics, category breakdowns, and priority ranking.
 17. **India Demand Map**: Thematic geospatial visualization pinning active geographic demand clusters across India.
 18. **Hotspot ↔ Map Synchronization**: Two-way interactive binding between table rows, map pins, and evidence inspection panels (`selectedHotspotKey`).
@@ -102,7 +102,7 @@ JanSetu AI leverages the Google GenAI SDK (`@google/genai`) and `@google/generat
 
 ### 1. Structured Civic Extraction (`/api/analyze-request`)
 - **Strict Output Schema**: Enforces strict JSON extraction containing `language`, `translated_text`, `category`, `issue`, `state`, `district`, `locality`, `affected_infrastructure`, `urgency`, `affected_population_estimate`, `government_department`, `summary`, and `recommended_action`.
-- **Zero Hallucination Guardrails**: Prompts explicitly forbid inferring or guessing geographic locations, pin codes, or population numbers not explicitly uttered or typed.
+- **Location Hallucination Protection**: Prompts explicitly forbid inferring or guessing geographic locations, pin codes, or population numbers not explicitly uttered or typed.
 
 ### 2. Vernacular Voice Processing (`/api/voice/transcribe`)
 - **Multimodal Audio Ingestion**: Direct PCM/WAV/WebM audio stream ingestion.
@@ -112,7 +112,7 @@ JanSetu AI leverages the Google GenAI SDK (`@google/genai`) and `@google/generat
 - Ingests the unified **Evidence Bundle** (demographics, citizen sentiment, infrastructure history).
 - Produces actionable project recommendations:
   - Project Title & Target Department
-  - Estimated Budget Range (in INR Lakhs / Crores)
+  - Implementation Considerations
   - Estimated Beneficiary Reach
   - Recommended Project Duration & Milestone Phases
   - Risk Factors & Administrative Next Steps
@@ -124,7 +124,11 @@ JanSetu AI leverages the Google GenAI SDK (`@google/genai`) and `@google/generat
 Priority ranking in JanSetu AI is strictly mathematical and deterministic.
 
 ### The Formula
-$$\text{Priority Score} = (\text{Demand} \times 30\%) + (\text{Affected Population} \times 25\%) + (\text{Urgency} \times 25\%) + (\text{Infrastructure Gap} \times 20\%)$$
+Priority Score =
+(Demand × 0.30)
++ (Affected Population × 0.25)
++ (Urgency × 0.25)
++ (Infrastructure Gap × 0.20)
 
 | Factor | Weight | Component Definition | Normalization Range |
 | :--- | :---: | :--- | :---: |
@@ -194,7 +198,7 @@ JanSetu AI incorporates verified official demographic data from the Government o
 ## 🛡️ Trust, Provenance & Safety
 
 ### 1. Location Hallucination Protection
-Grievance portals often suffer when models attempt to guess addresses. JanSetu AI enforces a **Zero Hallucination Rule**: if a citizen does not explicitly mention a locality, district, or town in their voice or text message, geographic fields remain empty (`location_source = "not_provided"`). Unlocated complaints are aggregated as unmapped requests and are **never** plotted arbitrarily on the map.
+Grievance portals often suffer when models attempt to guess addresses. The system prevents unsupported geographic inference by leaving location fields empty when the citizen does not explicitly provide a location (`location_source = "not_provided"`). Unlocated complaints are aggregated as unmapped requests and are never plotted arbitrarily on the map.
 
 ### 2. Deterministic Priority (No Black-Box Ranking)
 AI algorithms can exhibit bias or hallucinations when ranking public fund allocation. JanSetu AI delegates prioritization strictly to mathematical code, while Gemini is reserved for natural language comprehension and narrative summarization.
@@ -249,7 +253,7 @@ The following data represents the **recorded demonstration scenario** showcased 
 | **Database** | Cloud Firestore | Firebase Admin SDK (`firebase-admin`), Structured grievance storage, Hotspot collections |
 | **Demographic Data** | Census PCA 2011 | Office of the Registrar General & Census Commissioner, India (ORGI) |
 | **Production Hosting**| Vercel | Production cloud deployment with continuous integration from GitHub |
-| **Testing** | Node.js Test Suites | 440+ automated assertions across geography, scoring, Census, and evidence pipelines |
+| **Testing** | Node.js Test Suites | 472 automated assertions across geography, scoring, Census, evidence, dashboard, synchronization, completeness, and end-to-end validation. |
 
 ---
 
@@ -278,7 +282,7 @@ The following data represents the **recorded demonstration scenario** showcased 
 
 ## ⚠️ Known Limitations
 
-1. **Census Demographic Baseline**: Demographic data is sourced from the official **Census 2011** historical baseline (the latest complete published decennial Census of India).
+1. **Census Demographic Baseline**: Demographic data is sourced from the official Census 2011 historical baseline.
 2. **Prototype Evidence Data**: While demographic data for integrated test locations is official Census data, infrastructure and public investment records in the prototype currently use explicitly labelled **synthetic demo data**.
 3. **Prototype Status**: JanSetu AI is a hackathon prototype submitted for technical evaluation; it is not currently deployed as an official government production system.
 4. **Advisory AI Outputs**: All Gemini-generated recommendations are assistive starting briefs and must be vetted by licensed engineers and administrative officers.
@@ -302,7 +306,7 @@ The modular architecture of JanSetu AI is engineered for phased expansion across
 - **Live Production Deployment**: [https://jansetu-ai-seven.vercel.app/](https://jansetu-ai-seven.vercel.app/)
   - Citizen Intake Portal: [https://jansetu-ai-seven.vercel.app/citizen](https://jansetu-ai-seven.vercel.app/citizen)
   - Policymaker Intelligence Dashboard: [https://jansetu-ai-seven.vercel.app/dashboard](https://jansetu-ai-seven.vercel.app/dashboard)
-- **Source Code Repository**: [https://github.com/SharathcAcharya/jansetu-ai](https://github.com/SharathcAcharya/jansetu-ai)
+- **Source Code Repository**: [https://github.com/SharathAcharya/jansetu-ai](https://github.com/SharathAcharya/jansetu-ai)
 
 ---
 
@@ -365,7 +369,7 @@ jansetu-ai/
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/SharathcAcharya/jansetu-ai.git
+git clone https://github.com/SharathAcharya/jansetu-ai.git
 cd jansetu-ai
 npm install
 ```
