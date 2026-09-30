@@ -59,7 +59,7 @@ Policymaker Dashboard (Interactive India Map, Hotspot Details, Evidence Inspecti
 ```
 
 ### Role of Google Gemini
-- **Language Detection & Vernacular Translation**: Recognizes regional languages (Hindi, Kannada, Tamil, Marathi, Bengali, Telugu, etc.) and provides high-fidelity English translations.
+- **Language Detection & Vernacular Translation**: Recognizes regional languages (Hindi, Kannada, Tamil, Marathi, Bengali, Telugu, etc.) and provides English translations of supported vernacular inputs.
 - **Civic Issue & Entity Extraction**: Identifies the core grievance, sector, affected physical asset, and explicitly stated citizen estimates.
 - **Voice Transcription**: Transcribes spoken audio into native vernacular script and English representations via Gemini multimodal audio processing.
 - **Advisory Recommendation Generation**: Synthesizes the assembled Evidence Bundle into a structured project proposal brief.
@@ -124,11 +124,13 @@ JanSetu AI leverages the Google GenAI SDK (`@google/genai`) and `@google/generat
 Priority ranking in JanSetu AI is strictly mathematical and deterministic.
 
 ### The Formula
+```
 Priority Score =
 (Demand × 0.30)
 + (Affected Population × 0.25)
 + (Urgency × 0.25)
 + (Infrastructure Gap × 0.20)
+```
 
 | Factor | Weight | Component Definition | Normalization Range |
 | :--- | :---: | :--- | :---: |
@@ -164,10 +166,10 @@ JanSetu AI implements an **Evidence Bundle** architecture that corroborates citi
 
 ### Provenance Tracking Contract
 Every piece of evidence stored and displayed carries explicit provenance fields:
-- `dataSource`: Provenance origin (`citizen_submission` | `public_dataset` | `synthetic_demo` | `official_internal`)
+- `dataSource`: Provenance origin (`citizen_submission` | `public_dataset` | `synthetic_demo`)
 - `isSynthetic`: Boolean indicator preventing simulated test data from being mistaken for real records.
 - `sourceName`: Institutional publisher (e.g., *Census of India — Primary Census Abstract*)
-- `sourceReference`: Specific table, bulletin, or survey code (e.g., *Census PCA Table A-1*)
+- `sourceReference`: Specific table, bulletin, or survey code (e.g., *Census of India — Primary Census Abstract 2011*)
 - `sourceUrl`: Official government portal URL or canonical archive reference.
 - `sourceYear`: Reference year of the dataset (e.g., `2011`).
 - `retrievalTimestamp`: Exact ISO-8601 timestamp of record ingestion.
